@@ -1,0 +1,12 @@
+2016-11-08 10:08:52,112 - root - DEBUG - Starting state machine Chaperone Protocol FSM in state Chaperone Protocol: disconnected
+2016-11-08 10:08:52,123 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: disconnected received signal Chaperone Protocol: registration sent to chaperone (playground.base.RegisterGate v1.0 (104258650))
+2016-11-08 10:08:52,123 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: disconnected
+2016-11-08 10:08:52,123 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: negotiating
+2016-11-08 10:08:52,132 - playground.network.gate.Service - INFO - Gate Service listening on TCP port 19090
+2016-11-08 10:08:52,135 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-11-08 10:08:52,135 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: negotiating received signal <class 'playground.network.message.definitions.playground.base.GateRegistered.GateRegisteredv1_0'> (playground.base.GateRegistered v1.0 (104258690))
+2016-11-08 10:08:52,136 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: negotiating
+2016-11-08 10:08:52,136 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: negotiating
+2016-11-08 10:08:52,136 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: negotiating received signal Chaperone Protocol: chaperone sent registration (playground.base.GateRegistered v1.0 (104258690))
+2016-11-08 10:08:52,136 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: negotiating
+2016-11-08 10:08:52,136 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
