@@ -39,17 +39,26 @@ def sendSnn():
     snnMsg = RipMessage()
     snnMsg.SNN = True
 
-    # create certificate for client
+    # create certificate chain for client
     # assume current address is 20164.1.1936.123
-    nonce = randint(0, 10000)
-    certificate = [nonce]
-    certificate.append(CertFactory.getCertsForAddr("20164.1.1936.123"))
+    nonce1 = randint(0, 10000)
+    chain = [nonce1]
+    with open("./clientkey/client.csr") as f:
+        chain.append(f.read())
+    with open("./clientkey/client.cert") as f:
+        chain.append(f.read())
+    snnMsg.Certificate = chain
+    print chain
+
+
 
 
 # server side method
 def verifyClient(msg):
-    clientSig = msg.Signature
-    msg.Signature = ""
+    chain = msg.Certificate
+    nonce1 = chain[0]
+    clientPubKey = chain[1]
+
 
 
     # process of verification

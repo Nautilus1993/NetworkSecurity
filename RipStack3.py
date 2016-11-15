@@ -21,6 +21,8 @@ from authentication.CertFactory import *
 logger = logging.getLogger(__name__)
 errReporter = GetErrorReporter(__name__)
 
+
+
 """
     Step 1: Define Rip Message Body (ACK, SNN, AckNum and SnnNum)
 """
