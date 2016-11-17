@@ -1,22 +1,14 @@
 from twisted.internet.protocol import Protocol, Factory, connectionDone
-from zope.interface.declarations import implements
-from twisted.internet.interfaces import ITransport, IStreamServerEndpoint
 
-from playground.network.message.StandardMessageSpecifiers import BOOL1, \
-    STRING, UINT2, UINT4, LIST, DEFAULT_VALUE
-from playground.network.message.ProtoBuilder import MessageDefinition
+from playground.error import GetErrorReporter
+from playground.network.common.Packet import Packet, PacketStorage, IterateMessages
 from playground.network.common.Protocol import StackingTransport,\
     StackingFactoryMixin, StackingProtocolMixin
-
 from playground.network.common.statemachine import StateMachine
-from playground.network.common.statemachine import StateMachineError
-
-from playground.playgroundlog import packetTrace, logging
-from playground.error import GetErrorReporter
-from pprint import pprint
-from playground.network.common.Packet import Packet, PacketStorage, IterateMessages
-
-from authentication.CertFactory import *
+from playground.network.message.ProtoBuilder import MessageDefinition
+from playground.network.message.StandardMessageSpecifiers import BOOL1, \
+    STRING, LIST, DEFAULT_VALUE
+from playground.playgroundlog import logging
 
 logger = logging.getLogger(__name__)
 errReporter = GetErrorReporter(__name__)

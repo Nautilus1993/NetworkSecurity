@@ -16,11 +16,18 @@ from playground.error import GetErrorReporter
 from pprint import pprint
 from playground.network.common.Packet import Packet, PacketStorage, IterateMessages
 
+from CertFactory import getCertsForAddr, getPrivateKeyForAddr, getRootCert
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5
+from random import randint
+from playground.crypto import X509Certificate
+
 logger = logging.getLogger(__name__)
 errReporter = GetErrorReporter(__name__)
 
 """
-    Step 1: Define Rip Message Body (handshake version)
+        Step 1: Define Rip Message Body (handshake version)
 """
 
 class RipMessage(MessageDefinition):
@@ -34,9 +41,15 @@ class RipMessage(MessageDefinition):
         ("Data", STRING, DEFAULT_VALUE(""))
     ]
 
+    '''
+    private key: 20164.0.0.1.pem
+    public key: 20164.0.0.1.csr
+    certificate: 20164.0.0.1.cert
+    '''
+
 
 """
-    Step 2: Define Rip Test Transport
+        Step 2: Define Rip Transport with authentication
 """
 
 class RipTransport(StackingTransport):
@@ -50,7 +63,7 @@ class RipTransport(StackingTransport):
 
 
 """
-    Step 3: RipClientProtocol
+                    Step 3: RipClientProtocol
 """
 
 class RipClientProtocol(StackingProtocolMixin, Protocol):
@@ -65,6 +78,7 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
 
     def __init__(self):
         self.packetStorage = PacketStorage()
+        self.nonce = randint(0, 10000)
         self.SM = StateMachine("Rip Client Protocol StateMachine")
 
         self.SM.addState(self.STATE_CLIENT_CLOSE,
@@ -89,11 +103,13 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
 
 
     def connectionMade(self):
+        print "Gate address: " + self.transport.getHost()[0]
         print "Rip Client Protocol: connection Made"
         self.SM.start(self.STATE_CLIENT_CLOSE)
         print "Rip Client Protocol: start state machine from state -- " + self.SM.currentState()
         self.SM.signal(self.SIGNAL_CLIENT_SEND_SNN, "")
         print "Rip Client Protocol: after snn send current state -- " + self.SM.currentState()
+
 
     def dataSend(self, data):
         if not self.SM.currentState() == self.STATE_CLIENT_ESTABLISHED:
@@ -119,9 +135,11 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
     # onEnter callback for STATE_CLIENT_SNN_SENT
     def snnSend(self, signal, msg):
         print "Rip Client Protocol: snnSend received signal -- " + signal
-        snnMessage = RipMessage()
-        snnMessage.SNN = True
-        self.transport.write(Packet.MsgToPacketBytes(snnMessage))
+        snnMsg = RipMessage()
+        snnMsg.SNN = True
+        snnMsg.Certificate = self.generateCertificate()
+        snnMsg.Signature = self.generateSignature(snnMsg.__serialize__())
+        self.transport.write(Packet.MsgToPacketBytes(snnMsg))
 
     # not a callback, this function will be called at the first time enter established
     def sendAck(self):
@@ -136,6 +154,9 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
         # first time client 4enter established, must be triggered by signal_receive_snnack
         if signal == self.SIGNAL_CLIENT_RCVD_SNNACK:
             print "Rip Client Protocol: message handle -- signal : " + signal
+            if self.verification(msg) == False:
+                print "Rip Client Protocol: verification failed!"
+                return
             self.sendAck()
             higherTransport = RipTransport(self.transport, self)
             self.makeHigherConnection(higherTransport)
@@ -148,8 +169,48 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
             print "Rip Client Protocol: message handle -- undefined signal: ", signal
 
 
+    def generateCertificate(self):
+        addr = self.transport.getHost()[0]
+        chain = [self.nonce]
+        chain += getCertsForAddr(addr)
+        return chain
+
+    def generateSignature(self, data):
+        addr = self.transport.getHost()[0]
+        clientPrivateKeyBytes = getPrivateKeyForAddr(addr)
+        clientPrivateKey = RSA.importKey(clientPrivateKeyBytes)
+        clientSigner = PKCS1_v1_5.new(clientPrivateKey)
+        hasher = SHA256.new()
+        hasher.update(data)
+        signatureBytes = clientSigner.sign(hasher)
+        return signatureBytes
+
+    def verification(self, snnackMsg):
+        signatureBytes = snnackMsg.Signature
+        certificateChain = snnackMsg.Certificate
+
+        serverCert = X509Certificate.loadPEM(certificateChain[1])
+        CACert = X509Certificate.loadPEM(certificateChain[2])
+        rootCert = X509Certificate.loadPEM(getRootCert())
+
+        if(CACert.getIssuer() != rootCert.getSubject()):
+            return False
+        if(serverCert.getIssuer() != CACert.getSubject()):
+            return False
+
+        serverPublicKeyBlob = serverCert.getPublicKeyBlob()
+        serverPublicKey = RSA.importKey(serverPublicKeyBlob)
+        rsaVerifier = PKCS1_v1_5.new(serverPublicKey)
+        hasher = SHA256.new()
+        snnackMsg.Signature = ""
+        bytesToBeVerified = snnackMsg.__serialize__()
+
+        hasher.update(bytesToBeVerified)
+        result = rsaVerifier.verify(hasher, signatureBytes)
+        print "Rip Client verification result: " + str(result)
+        return result
 """
-    Step 4: RipServerProtocol
+                    Step 4: RipServerProtocol
 """
 
 class RipServerProtocol(StackingProtocolMixin, Protocol):
@@ -166,6 +227,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
     def __init__(self):
         self.packetStorage = PacketStorage()
+        self.nonce = randint(0, 10000)
         self.SM = StateMachine("Rip Server Protocol StateMachine")
 
         self.SM.addState(self.STATE_SERVER_LISTEN,
@@ -196,6 +258,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
 
     def connectionMade(self):
+        print "Gate address: " + self.transport.getHost()[0]
         self.SM.start(self.STATE_SERVER_LISTEN)
 
     def dataSend(self, data):
@@ -214,16 +277,20 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
 
     # onEnter callback for STATE_SERVER_SNN_RCVD
-    def sendSnnAck(self, signal, data):
+    def sendSnnAck(self, signal, rcvMsg):
         if signal == self.SIGNAL_SERVER_RCVD_SNN:
+            if self.verifySnnMessage(rcvMsg) == False:
+                print "Rip Server Protocol: verification failed!"
+                return
             print "Rip Server Protocol: sendSnnAck"
-            snnackMessage = RipMessage()
-            snnackMessage.SNN = True
-            snnackMessage.ACK = True
-            self.transport.write(Packet.MsgToPacketBytes(snnackMessage))
+            snnackMsg = RipMessage()
+            snnackMsg.SNN = True
+            snnackMsg.ACK = True
+            snnackMsg.Certificate = self.generateCertificate()
+            snnackMsg.Signature = self.generateSignature(snnackMsg.__serialize__())
+            self.transport.write(Packet.MsgToPacketBytes(snnackMsg))
         else:
             print "Rip Server Protocol: sendSnnAck -- undefined signal: " + signal
-
 
     # onEnter callback for STATE_SERVER_ESTABLISHED
     def messageHandle(self, signal, msg):
@@ -240,6 +307,48 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
         else:
             print "Rip Server Protocol: message handle -- undefined signal: ", signal
+
+    def verifySnnMessage(self, snnMsg):
+        signatureBytes = snnMsg.Signature
+        certificate = snnMsg.Certificate
+
+        clientCert = X509Certificate.loadPEM(certificate[1])
+        CACert = X509Certificate.loadPEM(certificate[2])
+        rootCert = X509Certificate.loadPEM(getRootCert())
+
+        if(CACert.getIssuer() != rootCert.getSubject()):
+            return False
+        if(clientCert.getIssuer() != CACert.getSubject()):
+            return False
+
+        clientPublicKeyBlob = clientCert.getPublicKeyBlob()
+        clientPublicKey = RSA.importKey(clientPublicKeyBlob)
+        rsaVerifier = PKCS1_v1_5.new(clientPublicKey)
+        hasher = SHA256.new()
+        snnMsg.Signature = ""
+        bytesToBeVerified = snnMsg.__serialize__()
+
+
+        hasher.update(bytesToBeVerified)
+        result = rsaVerifier.verify(hasher, signatureBytes)
+        print "Server verification result: " + str(result)
+        return result
+
+    def generateCertificate(self):
+        addr = self.transport.getHost()[0]
+        chain = [self.nonce]
+        chain += getCertsForAddr(addr)
+        return chain
+
+    def generateSignature(self, data):
+        addr = self.transport.getHost()[0]
+        serverPrivateKeyBytes = getPrivateKeyForAddr(addr)
+        serverPrivateKey = RSA.importKey(serverPrivateKeyBytes)
+        serverSigner = PKCS1_v1_5.new(serverPrivateKey)
+        hasher = SHA256.new()
+        hasher.update(data)
+        signatureBytes = serverSigner.sign(hasher)
+        return signatureBytes
 
 """
     Step 4: RipServerFactory & RipClientFactory
