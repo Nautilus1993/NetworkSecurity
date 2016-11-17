@@ -107,9 +107,6 @@ def getCertsForAddr(addr):
     os.system(generatePublicKey)
     os.system("US")
 
-
-self.transport.getHost().host
-
 def main():
     addr = "20164.1.1936.123" # test playground address
     getCertsForAddr(addr)

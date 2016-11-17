@@ -103,7 +103,6 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
 
 
     def connectionMade(self):
-        print "Gate address: " + self.transport.getHost()[0]
         print "Rip Client Protocol: connection Made"
         self.SM.start(self.STATE_CLIENT_CLOSE)
         print "Rip Client Protocol: start state machine from state -- " + self.SM.currentState()
@@ -142,22 +141,28 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
         self.transport.write(Packet.MsgToPacketBytes(snnMsg))
 
     # not a callback, this function will be called at the first time enter established
-    def sendAck(self):
+    def sendAck(self, nonce2):
         print "Rip Client Protocol: sendAck, current state -- " + self.SM.currentState()
         ackMessage = RipMessage()
         ackMessage.ACK = True
+        # ack message certificate chain only have 1 item : [nonce2 + 1]
+        ackMessage.Certificate = [int(nonce2) + 1]
         self.transport.write(Packet.MsgToPacketBytes(ackMessage))
 
     # onEnter callback for STATE_CLIENT_ESTABLISHED
     def messageHandle(self, signal, msg):
 
-        # first time client 4enter established, must be triggered by signal_receive_snnack
+        # first time client enter established, must be triggered by signal_receive_snnack
         if signal == self.SIGNAL_CLIENT_RCVD_SNNACK:
             print "Rip Client Protocol: message handle -- signal : " + signal
+            # certificate chain from server [nonce2, addrCert, CACert, nonce1 + 1]
             if self.verification(msg) == False:
                 print "Rip Client Protocol: verification failed!"
                 return
-            self.sendAck()
+            nonce2 = msg.Certificate[0]
+            nonce1Plus1 = msg.Certificate[3]
+            print "Rip Client Protocol: message handle -- rcvd snnack: (nonce1 + 1) from server = " + str(nonce1Plus1) + "nonce2 from server = " + str(nonce2)
+            self.sendAck(nonce2)
             higherTransport = RipTransport(self.transport, self)
             self.makeHigherConnection(higherTransport)
 
@@ -189,15 +194,21 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
         signatureBytes = snnackMsg.Signature
         certificateChain = snnackMsg.Certificate
 
+        # verify nonce1 + 1
+        nonce1Plus1 = certificateChain[3]
+        if(int(nonce1Plus1) != int(self.nonce + 1)):
+            return False
+
+        # verify server's certificate chain
         serverCert = X509Certificate.loadPEM(certificateChain[1])
         CACert = X509Certificate.loadPEM(certificateChain[2])
         rootCert = X509Certificate.loadPEM(getRootCert())
-
         if(CACert.getIssuer() != rootCert.getSubject()):
             return False
         if(serverCert.getIssuer() != CACert.getSubject()):
             return False
 
+        # verify signature with server's public key
         serverPublicKeyBlob = serverCert.getPublicKeyBlob()
         serverPublicKey = RSA.importKey(serverPublicKeyBlob)
         rsaVerifier = PKCS1_v1_5.new(serverPublicKey)
@@ -282,11 +293,13 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
             if self.verifySnnMessage(rcvMsg) == False:
                 print "Rip Server Protocol: verification failed!"
                 return
-            print "Rip Server Protocol: sendSnnAck"
+            print "Rip Server Protocol: sendSnnAck -- nonce1 from client = " + str(rcvMsg.Certificate[0])
+            nonce1 = rcvMsg.Certificate[0]
+
             snnackMsg = RipMessage()
             snnackMsg.SNN = True
             snnackMsg.ACK = True
-            snnackMsg.Certificate = self.generateCertificate()
+            snnackMsg.Certificate = self.generateCertificate(nonce1)
             snnackMsg.Signature = self.generateSignature(snnackMsg.__serialize__())
             self.transport.write(Packet.MsgToPacketBytes(snnackMsg))
         else:
@@ -297,7 +310,10 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
         # server first enter established, must be triggered by signal-received-ack
         if signal == self.SIGNAL_SERVER_RCVD_ACK:
-            print "Rip Server Protocol: message handle -- received ack"
+            print "Rip Server Protocol: message handle -- received ack: nonce2 + 1 = " + str(msg.Certificate[0]) + " server nonce = " + str(self.nonce)
+            nonce2Plus1 = msg.Certificate[0]
+            if (int(nonce2Plus1) != (self.nonce + 1)):
+                return False
             higherTransport = RipTransport(self.transport, self)
             self.makeHigherConnection(higherTransport)
 
@@ -312,6 +328,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
         signatureBytes = snnMsg.Signature
         certificate = snnMsg.Certificate
 
+        # verify client's certificate chain
         clientCert = X509Certificate.loadPEM(certificate[1])
         CACert = X509Certificate.loadPEM(certificate[2])
         rootCert = X509Certificate.loadPEM(getRootCert())
@@ -321,23 +338,26 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
         if(clientCert.getIssuer() != CACert.getSubject()):
             return False
 
+        # verify signature with client public key
         clientPublicKeyBlob = clientCert.getPublicKeyBlob()
         clientPublicKey = RSA.importKey(clientPublicKeyBlob)
         rsaVerifier = PKCS1_v1_5.new(clientPublicKey)
         hasher = SHA256.new()
         snnMsg.Signature = ""
         bytesToBeVerified = snnMsg.__serialize__()
-
-
         hasher.update(bytesToBeVerified)
         result = rsaVerifier.verify(hasher, signatureBytes)
         print "Server verification result: " + str(result)
+
         return result
 
-    def generateCertificate(self):
+    def generateCertificate(self, nonce1):
+        # generate certificate chain for SnnAck message: [nonce2, addrCert, CACert, nonce1 + 1]
         addr = self.transport.getHost()[0]
-        chain = [self.nonce]
+        chain = [str(self.nonce)]
         chain += getCertsForAddr(addr)
+        chain += [str(int(nonce1) + 1)]
+        print "Rip Server Protocol: generateCertificate -- server nonce = "+ chain[0] + " nonce1 + 1 = " + chain[3]
         return chain
 
     def generateSignature(self, data):

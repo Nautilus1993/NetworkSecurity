@@ -1,8 +1,7 @@
 from twisted.internet import protocol, reactor
 #from twisted.internet.endpoints import TCP4ServerEndpoint
-import sys
-import RipStackAuthentication
-from playground.twisted.endpoints import GateClientEndpoint, GateServerEndpoint
+from RipProtocol import RipStackAuthentication
+from playground.twisted.endpoints import GateServerEndpoint
 
 class Echo(protocol.Protocol):
     def dataReceived(self, data):
