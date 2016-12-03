@@ -1454,3 +1454,45 @@
 2016-11-17 16:14:22,504 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: connected
 2016-11-17 16:14:22,504 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
 2016-11-17 16:14:22,505 - playground.network.gate.Service - DEBUG - Gate service forwarding 135 bytes for srcPort 101
+2016-12-03 16:54:50,564 - root - DEBUG - Starting state machine Chaperone Protocol FSM in state Chaperone Protocol: disconnected
+2016-12-03 16:54:50,566 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: disconnected received signal Chaperone Protocol: registration sent to chaperone (playground.base.RegisterGate v1.0 (10e066650))
+2016-12-03 16:54:50,566 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: disconnected
+2016-12-03 16:54:50,566 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: negotiating
+2016-12-03 16:54:50,568 - playground.network.gate.Service - INFO - Gate Service listening on TCP port 19090
+2016-12-03 16:54:50,569 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-12-03 16:54:50,569 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: negotiating received signal <class 'playground.network.message.definitions.playground.base.GateRegistered.GateRegisteredv1_0'> (playground.base.GateRegistered v1.0 (10e066950))
+2016-12-03 16:54:50,569 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: negotiating
+2016-12-03 16:54:50,570 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: negotiating
+2016-12-03 16:54:50,570 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: negotiating received signal Chaperone Protocol: chaperone sent registration (playground.base.GateRegistered v1.0 (10e066950))
+2016-12-03 16:54:50,570 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: negotiating
+2016-12-03 16:54:50,570 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
+2016-12-03 16:55:25,650 - playground.network.gate.Service - INFO - Gate service received G2G Reservation 2 1892892929 from IPv4Address(TCP, '127.0.0.1', 62887)
+2016-12-03 16:55:25,651 - playground.network.gate.Service - INFO - Gate Service registering new listener on port 101
+2016-12-03 16:55:31,541 - playground.network.gate.Service - INFO - Gate service received G2G Reservation 1 1627412217 from IPv4Address(TCP, '127.0.0.1', 62985)
+2016-12-03 16:55:31,541 - playground.network.gate.Service - INFO - Port map for 1000 (resvId 1627412217) connecting to outbound 20164.0.0.1 101 using callback addr 127.0.0.1:22461
+2016-12-03 16:55:31,542 - playground.network.gate.Service - INFO - Gate Service registering new outbound connection to 20164.0.0.1 101 with srcport 1000
+2016-12-03 16:55:31,543 - playground.network.gate.Service - INFO - Completing callback circuit for outbound connect with resvId 1627412217 on local TCP port 62986
+2016-12-03 16:55:31,586 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-12-03 16:55:31,586 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: connected received signal <class 'playground.network.message.definitions.playground.base.Gate2GateMessage.Gate2GateMessagev1_0'> (playground.base.Gate2GateMessage v1.0 (10e066dd0))
+2016-12-03 16:55:31,586 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: connected
+2016-12-03 16:55:31,586 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
+2016-12-03 16:55:31,587 - playground.network.gate.Service - INFO - Spawning new connection from 20164.0.0.1:1000 to port 101
+2016-12-03 16:55:31,587 - playground.network.gate.Service - INFO - Port map for 101 (resvId 1892892929) spawning new connection from 20164.0.0.1 1000
+2016-12-03 16:55:31,588 - playground.network.gate.Service - DEBUG - Data received for port 101, but port not ready. Buffering
+2016-12-03 16:55:31,589 - playground.network.gate.Service - INFO - Spawning new connection for listener with resvId 1892892929 for 20164.0.0.1 1000 on local TCP port 62987
+2016-12-03 16:55:31,589 - playground.network.gate.Service - DEBUG - Gate service forwarding 2930 buffered bytes for srcPort 1000
+2016-12-03 16:55:31,625 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-12-03 16:55:31,625 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: connected received signal <class 'playground.network.message.definitions.playground.base.Gate2GateMessage.Gate2GateMessagev1_0'> (playground.base.Gate2GateMessage v1.0 (10e066990))
+2016-12-03 16:55:31,626 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: connected
+2016-12-03 16:55:31,626 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
+2016-12-03 16:55:31,626 - playground.network.gate.Service - DEBUG - Gate service forwarding 2938 bytes for srcPort 101
+2016-12-03 16:55:31,657 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-12-03 16:55:31,657 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: connected received signal <class 'playground.network.message.definitions.playground.base.Gate2GateMessage.Gate2GateMessagev1_0'> (playground.base.Gate2GateMessage v1.0 (10e066990))
+2016-12-03 16:55:31,657 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: connected
+2016-12-03 16:55:31,657 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
+2016-12-03 16:55:31,657 - playground.network.gate.Service - DEBUG - Gate service forwarding 226 bytes for srcPort 1000
+2016-12-03 16:55:31,662 - playground.network.common.Packet - DEBUG - Packet not ready. Cutting off 0 bad bytes
+2016-12-03 16:55:31,662 - root - DEBUG - State machine Chaperone Protocol FSM in state Chaperone Protocol: connected received signal <class 'playground.network.message.definitions.playground.base.Gate2GateMessage.Gate2GateMessagev1_0'> (playground.base.Gate2GateMessage v1.0 (10e066990))
+2016-12-03 16:55:31,662 - root - DEBUG - State machine Chaperone Protocol FSM existing current state Chaperone Protocol: connected
+2016-12-03 16:55:31,662 - root - DEBUG - State machine Chaperone Protocol FSM entering state Chaperone Protocol: connected
+2016-12-03 16:55:31,663 - playground.network.gate.Service - DEBUG - Gate service forwarding 135 bytes for srcPort 101
