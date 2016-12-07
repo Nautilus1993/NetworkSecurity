@@ -49,7 +49,12 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
         return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_read(fd, size)
         
     def do_ll_os__ll_os_write(self, fd, data):
-        return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_write(fd, data)
+        if (isinstance(fd, file)):
+            # here we need to overwrite the function of write_sys_call in sandlib]
+            print "E_Sanbox os_write(fd, data): fd = " + str(fd)
+            return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_write(fd, data)
+        else:
+            return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_write(fd, data)
         
     def do_ll_os__ll_os_envitems(self):
         return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_envitems()
