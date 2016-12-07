@@ -138,9 +138,9 @@ class WriteableRealFile(RealFile):
             self.mode = WriteableRealFile.getOpenModeString(oFlags)
             print "WriteableRealFile open(): self.mode = " + str(self.mode)
             f =  open(self.path, self.mode)
-
-            if not os.O_RDONLY in oFlags:
-                self.read_only = False
             return f
+            # if not os.O_RDONLY in oFlags:
+            #     self.read_only = False
+            # return f
         except IOError, e:
             raise OSError(e.errno, "open failed")
