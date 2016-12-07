@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e775d1a1-b6b5-4fae-9ab4-9522ae960168" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" afterPath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" />
     </list>
     <ignored path="NetworkSecurity.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,7 +45,7 @@
             <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.55480605">
-                  <caret line="139" column="34" selection-start-line="139" selection-start-column="34" selection-end-line="139" selection-end-column="34" />
+                  <caret line="139" column="31" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
                   <folding>
                     <element signature="e#49#100#0" expanded="true" />
                   </folding>
@@ -961,7 +960,7 @@
     <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.55480605">
-          <caret line="139" column="34" selection-start-line="139" selection-start-column="34" selection-end-line="139" selection-end-column="34" />
+          <caret line="139" column="31" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
           <folding>
             <element signature="e#49#100#0" expanded="true" />
           </folding>

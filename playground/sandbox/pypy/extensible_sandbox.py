@@ -5,7 +5,7 @@ Created on Mar 21, 2015
 '''
 from rpython.translator.sandbox.sandlib import SimpleIOSandboxedProc
 from rpython.translator.sandbox.sandlib import VirtualizedSandboxedProc
-
+import os
 from virtualfileio import WriteableRealFile
 
 class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
