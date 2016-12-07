@@ -175,13 +175,13 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
 
 
     def generateCertificate(self):
-        addr = self.transport.getHost()[0]
+        addr = self.transport.getHost().host
         chain = [self.nonce]
         chain += getCertsForAddr(addr)
         return chain
 
     def generateSignature(self, data):
-        addr = self.transport.getHost()[0]
+        addr = self.transport.getHost().host
         clientPrivateKeyBytes = getPrivateKeyForAddr(addr)
         clientPrivateKey = RSA.importKey(clientPrivateKeyBytes)
         clientSigner = PKCS1_v1_5.new(clientPrivateKey)
@@ -269,7 +269,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
 
     def connectionMade(self):
-        print "Gate address: " + self.transport.getHost()[0]
+        print "Gate address: " + self.transport.getHost().host
         self.SM.start(self.STATE_SERVER_LISTEN)
 
     def dataSend(self, data):
@@ -353,7 +353,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
     def generateCertificate(self, nonce1):
         # generate certificate chain for SnnAck message: [nonce2, addrCert, CACert, nonce1 + 1]
-        addr = self.transport.getHost()[0]
+        addr = self.transport.getHost().host
         chain = [str(self.nonce)]
         chain += getCertsForAddr(addr)
         chain += [str(int(nonce1) + 1)]
@@ -361,7 +361,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
         return chain
 
     def generateSignature(self, data):
-        addr = self.transport.getHost()[0]
+        addr = self.transport.getHost().host
         serverPrivateKeyBytes = getPrivateKeyForAddr(addr)
         serverPrivateKey = RSA.importKey(serverPrivateKeyBytes)
         serverSigner = PKCS1_v1_5.new(serverPrivateKey)
