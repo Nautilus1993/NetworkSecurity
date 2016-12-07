@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e775d1a1-b6b5-4fae-9ab4-9522ae960168" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" afterPath="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" afterPath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" />
     </list>
     <ignored path="NetworkSecurity.iws" />
@@ -33,8 +34,8 @@
           <file leaf-file-name="extensible_sandbox.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.36065573">
-                  <caret line="60" column="46" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+                <state vertical-scroll-proportion="0.64116573">
+                  <caret line="56" column="42" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
                   <folding>
                     <element signature="e#49#117#0" expanded="true" />
                   </folding>
@@ -46,7 +47,7 @@
             <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="139" column="12" selection-start-line="139" selection-start-column="14" selection-end-line="142" selection-end-column="22" />
+                  <caret line="139" column="43" selection-start-line="139" selection-start-column="43" selection-end-line="139" selection-end-column="43" />
                   <folding />
                 </state>
               </provider>
@@ -56,11 +57,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="sandlib.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="sandlib.py" pinned="false" current-in-tab="false">
             <entry file="file:///Library/Python/2.7/site-packages/rpython/translator/sandbox/sandlib.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.4116576">
-                  <caret line="444" column="8" selection-start-line="444" selection-start-column="8" selection-end-line="444" selection-end-column="8" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="500" column="8" selection-start-line="500" selection-start-column="8" selection-end-line="500" selection-end-column="8" />
                   <folding>
                     <element signature="e#196#240#0" expanded="true" />
                   </folding>
@@ -68,11 +69,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="vfs.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="vfs.py" pinned="false" current-in-tab="true">
             <entry file="file:///Library/Python/2.7/site-packages/rpython/translator/sandbox/vfs.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="134" column="40" selection-start-line="134" selection-start-column="40" selection-end-line="134" selection-end-column="40" />
+                <state vertical-scroll-proportion="0.55919856">
+                  <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -108,8 +109,8 @@
         <option value="$PROJECT_DIR$/RipProtocol/RipStackAuthentication.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" />
         <option value="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" />
+        <option value="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" />
       </list>
     </option>
   </component>
@@ -485,7 +486,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15827338" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -494,7 +495,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2962515" sideWeight="0.4942446" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2962515" sideWeight="0.4942446" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -546,13 +547,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/httpClient.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="32" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/httpServer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -873,13 +867,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.436873">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file:///Library/Python/2.7/site-packages/rpython/translator/sandbox/sandlib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4116576">
-          <caret line="444" column="8" selection-start-line="444" selection-start-column="8" selection-end-line="444" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="500" column="8" selection-start-line="500" selection-start-column="8" selection-end-line="500" selection-end-column="8" />
           <folding>
             <element signature="e#196#240#0" expanded="true" />
           </folding>
@@ -888,26 +883,34 @@
     </entry>
     <entry file="file:///Library/Python/2.7/site-packages/rpython/translator/sandbox/vfs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="134" column="40" selection-start-line="134" selection-start-column="40" selection-end-line="134" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.55919856">
+          <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/os.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="139" column="12" selection-start-line="139" selection-start-column="14" selection-end-line="142" selection-end-column="22" />
+          <caret line="139" column="43" selection-start-line="139" selection-start-column="43" selection-end-line="139" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36065573">
-          <caret line="60" column="46" selection-start-line="60" selection-start-column="46" selection-end-line="60" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.64116573">
+          <caret line="56" column="42" selection-start-line="56" selection-start-column="42" selection-end-line="56" selection-end-column="42" />
           <folding>
             <element signature="e#49#117#0" expanded="true" />
           </folding>
