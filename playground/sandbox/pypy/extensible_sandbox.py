@@ -48,8 +48,8 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
         print "E_Sandbox os_open(name, flags, mode): name = " \
               + str(name) + " flags = " + str(flags) + " mode = " + str(mode)
         node = WriteableRealFile(name)
-        mode = node.getOpenModeString(flags)
-        print "E_Sandbox os_open(name, flags, mode): after getOpenModeString(flags) mode = " + mode
+        node.open(flags, mode)
+        #print "E_Sandbox os_open(name, flags, mode): after getOpenModeString(flags) mode = " + mode
         return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_open(name, flags, mode)
         
     def do_ll_os__ll_os_read(self, fd, size):

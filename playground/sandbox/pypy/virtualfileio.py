@@ -136,6 +136,7 @@ class WriteableRealFile(RealFile):
         try:
             oFlags = FileUtil.OFlags(flags)
             self.mode = WriteableRealFile.getOpenModeString(oFlags)
+            print "WriteableRealFile open(): self.mode = " + str(mode)
             f =  open(self.path, self.mode)
             if not os.O_RDONLY in oFlags:
                 self.read_only = False
