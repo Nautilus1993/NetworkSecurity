@@ -43,7 +43,7 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
         # used by the get_file method
     
     def do_ll_os__ll_os_open(self, name, flags, mode):
-        print "E_Sandbox -- open(): flags -- " + str(flags) + " mode: " + str(mode) 
+        #print "E_Sandbox -- open(): flags -- " + str(flags) + " mode: " + str(mode)
         return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_open(name, flags, mode)
         
     def do_ll_os__ll_os_read(self, fd, size):
