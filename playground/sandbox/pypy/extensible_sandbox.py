@@ -6,6 +6,8 @@ Created on Mar 21, 2015
 from rpython.translator.sandbox.sandlib import SimpleIOSandboxedProc
 from rpython.translator.sandbox.sandlib import VirtualizedSandboxedProc
 
+from virtualfileio import WriteableRealFile
+
 class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
     """
     This class allows for relatively easy extensions to the default pypy sandbox.
@@ -43,7 +45,11 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
         # used by the get_file method
     
     def do_ll_os__ll_os_open(self, name, flags, mode):
-        #print "E_Sandbox -- open(): flags -- " + str(flags) + " mode: " + str(mode)
+        print "E_Sandbox os_open(name, flags, mode): name = " \
+              + str(name) + " flags = " + str(flags) + " mode = " + str(mode)
+        node = WriteableRealFile(name)
+        mode = node.getOpenModeString(flags)
+        print "E_Sandbox os_open(name, flags, mode): after getOpenModeString(flags) mode = " + mode
         return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_open(name, flags, mode)
         
     def do_ll_os__ll_os_read(self, fd, size):
@@ -52,7 +58,7 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
     def do_ll_os__ll_os_write(self, fd, data):
         if (isinstance(fd, file)):
             # here we need to overwrite the function of write_sys_call in sandlib]
-            print "E_Sanbox os_write(fd, data): fd = " + str(fd)
+            print "E_Sandbox os_write(fd, data): fd = " + str(fd)
             return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_write(fd, data)
         else:
             return super(ExtensibleSandboxedProc, self).do_ll_os__ll_os_write(fd, data)
