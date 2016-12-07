@@ -50,6 +50,7 @@ class ExtensibleSandboxedProc(VirtualizedSandboxedProc, SimpleIOSandboxedProc):
               " flags = " + str(flags) + \
               " mode  = " + str(mode)
         node = WriteableRealFile(name)
+        node.open(flags, mode)
         # f = node.open(flags, mode)
         # if isinstance(f, file):
         #     print "E_Sandbox os_open(name, flags, mode): f = node.open(flags, mode) return a file object"

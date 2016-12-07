@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e775d1a1-b6b5-4fae-9ab4-9522ae960168" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" afterPath="$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" afterPath="$PROJECT_DIR$/playground/sandbox/pypy/virtualfileio.py" />
     </list>
     <ignored path="NetworkSecurity.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,8 +33,8 @@
           <file leaf-file-name="extensible_sandbox.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6718147">
-                  <caret line="58" column="12" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
+                <state vertical-scroll-proportion="0.4169884">
+                  <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
                   <folding>
                     <element signature="e#49#117#0" expanded="true" />
                   </folding>
@@ -942,8 +942,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/playground/sandbox/pypy/extensible_sandbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6718147">
-          <caret line="58" column="12" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.4169884">
+          <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
           <folding>
             <element signature="e#49#117#0" expanded="true" />
           </folding>
