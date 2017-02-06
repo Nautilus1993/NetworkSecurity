@@ -18,6 +18,7 @@ from playground.network.common.Packet import Packet, PacketStorage, IterateMessa
 
 logger = logging.getLogger(__name__)
 errReporter = GetErrorReporter(__name__)
+eneble_logger = True
 
 """
     Step 1: Define Rip Message Body (handshake version)
@@ -34,7 +35,7 @@ class RipMessage(MessageDefinition):
 
 
 """
-    Step 2: Define Rip Test Transport
+    Step 2: Define Rip Transport
 """
 
 class RipTransport(StackingTransport):

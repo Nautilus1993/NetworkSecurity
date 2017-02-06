@@ -175,13 +175,15 @@ class RipClientProtocol(StackingProtocolMixin, Protocol):
 
 
     def generateCertificate(self):
-        addr = self.transport.getHost().host
+        #addr = self.transport.getHost().host
+        addr = self.transport.getHost()
         chain = [self.nonce]
         chain += getCertsForAddr(addr)
         return chain
 
     def generateSignature(self, data):
-        addr = self.transport.getHost().host
+        #addr = self.transport.getHost().host
+        addr = self.transport.getHost()
         clientPrivateKeyBytes = getPrivateKeyForAddr(addr)
         clientPrivateKey = RSA.importKey(clientPrivateKeyBytes)
         clientSigner = PKCS1_v1_5.new(clientPrivateKey)
@@ -269,7 +271,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
 
     def connectionMade(self):
-        print "Gate address: " + self.transport.getHost().host
+        print "Gate address: " + self.transport.getHost()
         self.SM.start(self.STATE_SERVER_LISTEN)
 
     def dataSend(self, data):
