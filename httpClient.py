@@ -1,7 +1,8 @@
 from twisted.internet import protocol, reactor
 #from twisted.internet.endpoints import TCP4ClientEndpoint
 
-from RipProtocol import RipStackAuthentication
+#from RipProtocol import RipStackAuthentication
+from RipProtocol import RipStack
 from playground.twisted.endpoints import GateClientEndpoint
 
 
@@ -30,7 +31,7 @@ class EchoFactory(protocol.ClientFactory):
 
 def main():
     #endpoint = GateClientEndpoint.CreateFromConfig(reactor, "20164.0.0.1", 101, "gatekey2", networkStack=KissProtocol)
-    endpoint = GateClientEndpoint.CreateFromConfig(reactor, "20164.0.0.1", 101, "gatekey2", networkStack=RipStackAuthentication)
+    endpoint = GateClientEndpoint.CreateFromConfig(reactor, "20164.0.0.1", 101, "gatekey2", networkStack=RipStack)
     endpoint.connect(EchoFactory())
     reactor.run()
 

@@ -13,23 +13,22 @@ from playground import playgroundlog
 # We will use "BOOL1" and "STRING" in our message definition
 from playground.network.message.StandardMessageSpecifiers import BOOL1, STRING
 
-from playground.network.common import PlaygroundAddress
-
 # MessageDefinition is the base cl bass of all automatically serializable messages
 from playground.network.message.ProtoBuilder import MessageDefinition
 
 from playground.twisted.endpoints import GateServerEndpoint, GateClientEndpoint
 from playground.twisted.error.ErrorHandlers import TwistedShutdownErrorHandler
 
-from twisted.internet import defer, stdio
+from twisted.internet import stdio
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, Factory, connectionDone
 from twisted.protocols import basic
 
-import sys, time, os, logging
+import sys, os, logging
 from twisted.internet.endpoints import connectProtocol
 from playground.network.common.Timer import callLater
-from RipProtocol import RipStackAuthentication
+from RipProtocol.RipTutorial import RipStackAuthentication
+
 logger = logging.getLogger(__name__)
 
 class EchoProtocolMessage(MessageDefinition):
