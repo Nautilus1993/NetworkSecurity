@@ -7,7 +7,56 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from playground.crypto import X509Certificate
 
+    '''
+                Part III: Authentication
 
+    private key:                    20164.0.0.1.pem
+    public key:                     20164.0.0.1.csr
+    self-certificate:               20164.0.0.1.cert
+    certificate signed by Prof:     CA.cert
+    root certificate:               root.cert
+
+        Certificate Chain:
+
+        Step 1:
+
+        Client  -------   send SNN message   ------->  Server
+
+                        +------------------+
+                        |     nonce 1      |
+                        +------------------+
+                        | 20164.0.0.1.cert |
+                        +------------------+
+                        |     CA.cert      |
+                        +------------------+
+                        |    root.cert     |
+                        +------------------+
+
+        Step 2:
+
+        Client  <------- send SNN/ACK message -------  Server
+
+                        +------------------+
+                        |   nonce 1 + 1    |
+                        +------------------+
+                        |     nonce 2      |
+                        +------------------+
+                        | 20164.0.0.2.cert |
+                        +------------------+
+                        |     CA.cert      |
+                        +------------------+
+                        |    root.cert     |
+                        +------------------+
+
+        Step 3: (This step is not here, find it at RipServer.py -- messageHandle())
+
+        Client  -------   send ACK message   ------->  Server
+
+                        +------------------+
+                        |   nonce 2 + 1    |
+                        +------------------+
+
+    '''
 
 def generateClientCertificate(addr, nonce):
     chain = [nonce]
@@ -71,22 +120,3 @@ def verification(nonce, msg):
     result = rsaVerifier.verify(hasher, signatureBytes)
     print "Rip HandShake verification result:" + str(result)
     return result
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

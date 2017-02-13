@@ -106,38 +106,4 @@ class RipMessage(MessageDefinition):
                                      +---------+
 
     '''
-    #==========================================================
-    '''
-                Part III: Authentication Process
-
-    private key:                    20164.0.0.1.pem
-    public key:                     20164.0.0.1.csr
-    self-certificate:               20164.0.0.1.cert
-    certificate signed by Prof:     CA.cert
-    root certificate:               root.cert
-
-        Certificate Chain:
-
-        Client  -------   send SNN message   ------->  Server
-
-                        +------------------+
-                        | 20164.0.0.1.cert |
-                        +------------------+
-                        |     CA.cert      |
-                        +------------------+
-                        |    root.cert     |
-                        +------------------+
-
-
-        Client  <------- send SNN/ACK message -------  Server
-
-                        +------------------+
-                        | 20164.0.0.2.cert |
-                        +------------------+
-                        |     CA.cert      |
-                        +------------------+
-                        |    root.cert     |
-                        +------------------+
-
-    '''
 
