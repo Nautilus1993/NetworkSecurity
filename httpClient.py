@@ -2,6 +2,8 @@ from twisted.internet import protocol, reactor
 #from twisted.internet.endpoints import TCP4ClientEndpoint
 
 #from RipProtocol import RipStackAuthentication
+from twisted.internet.protocol import connectionDone
+
 from RipProtocol import RipStack
 from playground.twisted.endpoints import GateClientEndpoint
 
@@ -16,6 +18,7 @@ class EchoClient(protocol.Protocol):
     def dataReceived(self, data):
         print "Message from server:" , data
         self.transport.loseConnection()
+
 
 class EchoFactory(protocol.ClientFactory):
     def buildProtocol(self, addr):

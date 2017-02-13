@@ -23,6 +23,9 @@ Future cooperators,
     Same functions will be extracted as new modules, at the same level with
     "RipTransport.py."
 
+    Most cases you don't need to change level 1, 2, 4.
+    All the functions should be add into level 2.
+
 
                         +---------------+
                         | RipMessage.py |
