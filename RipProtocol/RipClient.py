@@ -1,17 +1,13 @@
-# Transport --> Protocol --> Factory
 from twisted.internet.protocol import Protocol, Factory, connectionDone
 from playground.network.common.Protocol import StackingFactoryMixin, StackingProtocolMixin
 from playground.network.common.Packet import Packet, PacketStorage, IterateMessages
 
-# Statemachine
 from playground.network.common.statemachine import StateMachine
 from playground.network.common.statemachine import StateMachineError
 
-# Rip Message Body, Rip transport
 from RipProtocol.RipMessage import RipMessage
 from RipProtocol.RipTransport import RipTransport, logger, errReporter
 
-# Certificate and Signature
 from Authentication import generateClientCertificate, generateSignature, verification
 from random import randint
 
@@ -41,40 +37,26 @@ class RipClientProtocol(StackingProtocolMixin, Protocol, RipTransport):
         self.SM = StateMachine("Rip Client Protocol StateMachine")
 
         self.SM.addState(self.STATE_CLIENT_CLOSE,
-                        # transition
-                        (self.SIGNAL_CLIENT_SEND_SNN, self.STATE_CLIENT_SNN_SENT),
-                        # no callback for CLOSE
-                        )
+                        (self.SIGNAL_CLIENT_SEND_SNN, self.STATE_CLIENT_SNN_SENT))
 
         self.SM.addState(self.STATE_CLIENT_SNN_SENT,
-                        # transition
                         (self.SIGNAL_CLIENT_RCVD_SNNACK, self.STATE_CLIENT_ESTABLISHED),
-                        # callbacks for SNN_SENT
                         onEnter = self.sendSnn)
 
 
         self.SM.addState(self.STATE_CLIENT_ESTABLISHED,
-                        # transtion
                         (self.SIGNAL_CLIENT_RIPMESSAGE, self.STATE_CLIENT_ESTABLISHED),
                         (self.SIGNAL_CLIENT_RCVD_SNNACK, self.STATE_CLIENT_ESTABLISHED),
                         (self.SIGNAL_CLIENT_RCVD_CLS, self.STATE_CLIENT_CLS_RCVD),
                         (self.SIGNAL_CLIENT_SEND_CLS, self.STATE_CLIENT_CLS_SEND),
-                        # callback
                         onEnter = self.messageHandle)
 
-        # send CLS to server, wait for cls/ack from server
         self.SM.addState(self.STATE_CLIENT_CLS_SEND,
-                         # transtion
                          (self.SIGNAL_CLIENT_RCVD_CLSACK, self.STATE_CLIENT_CLOSE),
-                         # callback
-                         onEnter = self.sendCls,
-                         onExit = self.connectionLost)
+                         onEnter = self.sendCls)
 
-        # received CLS from server, send cls/ack back, shift to close state
         self.SM.addState(self.STATE_CLIENT_CLS_RCVD,
-                         # transtion
                          (self.SIGNAL_CLIENT_SEND_CLSACK, self.STATE_CLIENT_CLOSE),
-                         # callback
                          onEnter = self.sendClsAck)
 
 
@@ -88,7 +70,7 @@ class RipClientProtocol(StackingProtocolMixin, Protocol, RipTransport):
     def connectionLost(self, reason=connectionDone):
         self.SM.signal(self.SIGNAL_CLIENT_SEND_CLS, "")
         print "Rip Client Protocol: connection lost"
-        #self.transport.loseConnection()
+        self.transport.loseConnection()
 
     def dataSend(self, data):
         if not self.SM.currentState() == self.STATE_CLIENT_ESTABLISHED:
@@ -118,10 +100,7 @@ class RipClientProtocol(StackingProtocolMixin, Protocol, RipTransport):
             clientSignal = self.msgToSignal(rcvMsg)
             self.SM.signal(clientSignal, rcvMsg)
 
-    """
-            RipClient OnEnter Callback Functions
-    """
-
+    """    RipClient OnEnter Callback Functions    """
 
     # 1. STATE_CLIENT_SNN_SENT
     def sendSnn(self, signal, msg):
@@ -177,6 +156,7 @@ class RipClientProtocol(StackingProtocolMixin, Protocol, RipTransport):
             self.transport.write(Packet.MsgToPacketBytes(msg))
             # !! here need to add timer before signal to close
             self.SM.signal(self.SIGNAL_CLIENT_SEND_CLSACK, msg)
+            self.transport.loseConnection()
         else:
             print "Rip Client Protocol: 3.2 sendClsAck -- undefined signal: ", signal
 
@@ -185,6 +165,5 @@ class RipClientProtocol(StackingProtocolMixin, Protocol, RipTransport):
         print "Rip Client Protocol: sendAck, current state -- " + self.SM.currentState()
         msg = RipMessage()
         msg.ACK = True
-        # ack message certificate chain only have 1 item : [nonce2 + 1]
         msg.Certificate = [int(nonce2) + 1]
         self.transport.write(Packet.MsgToPacketBytes(msg))

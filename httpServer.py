@@ -35,6 +35,8 @@ class Echo(protocol.Protocol):
 class EchoFactory(protocol.Factory):
     def buildProtocol(self, addr):
         return Echo()
+    def serverConncectionLost(self, connnector, reason):
+        print "http server connection lost: return to listen"
 
 def main():
     #endpoint = GateServerEndpoint.CreateFromConfig(reactor, 101, "gatekey1", networkStack=KissProtocol)

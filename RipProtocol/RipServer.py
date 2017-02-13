@@ -1,17 +1,13 @@
-# Transport --> Protocol --> Factory
 from twisted.internet.protocol import Protocol, Factory, connectionDone
 from playground.network.common.Protocol import StackingFactoryMixin, StackingProtocolMixin
 from playground.network.common.Packet import Packet, PacketStorage, IterateMessages
 
-# Statemachine
 from playground.network.common.statemachine import StateMachine
 from playground.network.common.statemachine import StateMachineError
 
-# Rip Message Body, Rip transport
 from RipProtocol.RipMessage import RipMessage
 from RipProtocol.RipTransport import RipTransport, logger, errReporter
 
-# Certificate and Signature
 from RipProtocol.Authentication import generateServerCertificate, generateSignature, verification
 from random import randint
 
@@ -20,14 +16,12 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
     """
             Rip Server State Machine
     """
-    # States for handshake
     STATE_SERVER_LISTEN = "RIP SERVER STATE MACHINE: LISTEN"
     STATE_SERVER_SNN_RCVD = "RIP SERVER STATE MACHINE: SNN_RCVD"
     STATE_SERVER_ESTABLISHED = "RIP SERVER STATE MACHINE: ESTABLISHED"
     STATE_SERVER_CLS_RCVD = "RIP SERVER STATE MACHINE: CLS_RCVD"
     STATE_SERVER_CLS_SEND = "RIP SERVER STATE MACHINE: CLS_SEND"
 
-    # signal
     SIGNAL_SERVER_RCVD_SNN = "RIP SERVER STATE MACHINE: received snn"
     SIGNAL_SERVER_RCVD_ACK = "RIP SERVER STATE MACHINE: received ack"
     SIGNAL_SERVER_RIPMESSAGE = "RIP SERVER STATE MACHINE: general data without flags"
@@ -42,46 +36,33 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
         self.SM = StateMachine("Rip Server Protocol StateMachine")
 
         self.SM.addState(self.STATE_SERVER_LISTEN,
-                        # transition
                         (self.SIGNAL_SERVER_RCVD_SNN, self.STATE_SERVER_SNN_RCVD),
-                        # no callback for LISTEN
                         )
         self.SM.addState(self.STATE_SERVER_SNN_RCVD,
-                        # transition
                         (self.SIGNAL_SERVER_RCVD_ACK, self.STATE_SERVER_ESTABLISHED),
-                        # callback
                         onEnter = self.sendSnnAck)
 
         self.SM.addState(self.STATE_SERVER_ESTABLISHED,
-                        # transtion
                         (self.SIGNAL_SERVER_RIPMESSAGE, self.STATE_SERVER_ESTABLISHED),
                         (self.SIGNAL_SERVER_RCVD_CLS, self.STATE_SERVER_CLS_RCVD),
                         (self.SIGNAL_SERVER_SEND_CLS, self.STATE_SERVER_CLS_SEND),
-                        # callback
                         onEnter = self.messageHandle)
 
-        # send cls to client, wait for cls/ack back
         self.SM.addState(self.STATE_SERVER_CLS_SEND,
-                         # transition
                          (self.SIGNAL_SERVER_RCVD_CLSACK, self.STATE_SERVER_LISTEN),
-                         # callback
                          onEnter = self.sendCls)
 
         self.SM.addState(self.STATE_SERVER_CLS_RCVD,
-                         # transition
                          (self.SIGNAL_SERVER_SEND_CLSACK, self.STATE_SERVER_LISTEN),
-                         # callback
-                         onEnter = self.sendClsAck,
-                         onExit = self.connectionLost)
+                         onEnter = self.sendClsAck)
 
     def connectionMade(self):
-        #print "Gate address: " + str(self.transport.getHost())
         self.SM.start(self.STATE_SERVER_LISTEN)
 
     def connectionLost(self, reason=connectionDone):
         self.SM.signal(self.SIGNAL_SERVER_SEND_CLS, "")
         print "Rip Server Protocol: connection lost"
-        #self.transport.loseConnection()
+        self.transport.loseConnection()
 
     def dataSend(self, data):
         if not self.SM.currentState() == self.STATE_SERVER_ESTABLISHED:
@@ -113,11 +94,10 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
         self.packetStorage.update(data)
         for rcvMsg in IterateMessages(self.packetStorage, logger, errReporter):
             serverSignal = self.msgToSignal(rcvMsg)
+            print "server signal" + str(serverSignal)
             self.SM.signal(serverSignal, rcvMsg)
 
-    """
-            RipServer OnEnter Callback Functions
-    """
+    """     RipServer OnEnter Callback Functions    """
 
     # 1. STATE_SERVER_SNN_RCVD
     def sendSnnAck(self, signal, rcvMsg):
@@ -138,8 +118,6 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
 
     # 2. STATE_SERVER_ESTABLISHED
     def messageHandle(self, signal, msg):
-
-        # server first enter established, must be triggered by signal-received-ack
         if signal == self.SIGNAL_SERVER_RCVD_ACK:
             print "Rip Server Protocol: 2. message handle -- received ack: nonce2 + 1 = " + str(msg.Certificate[0]) + " server nonce = " + str(self.nonce)
             nonce2Plus1 = msg.Certificate[0]
@@ -162,6 +140,7 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
             msg = RipMessage()
             msg.CLS = True
             self.transport.write(Packet.MsgToPacketBytes(msg))
+            # timer here
         else:
             print "Rip Server Protocol: 3.1 sendCls -- undefined signal: ", signal
 
@@ -174,5 +153,6 @@ class RipServerProtocol(StackingProtocolMixin, Protocol):
             msg.ACK = True
             self.transport.write(Packet.MsgToPacketBytes(msg))
             self.SM.signal(self.SIGNAL_SERVER_SEND_CLSACK, msg)
+            self.transport.loseConnection()
         else:
             print "Rip Server Protocol: 3.2 sendClsAck -- undefined signal: ", signal

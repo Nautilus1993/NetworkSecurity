@@ -7,7 +7,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from playground.crypto import X509Certificate
 
-    '''
+"""
                 Part III: Authentication
 
     private key:                    20164.0.0.1.pem
@@ -16,7 +16,7 @@ from playground.crypto import X509Certificate
     certificate signed by Prof:     CA.cert
     root certificate:               root.cert
 
-        Certificate Chain:
+        Certificate Chain Verification:
 
         Step 1:
 
@@ -56,7 +56,7 @@ from playground.crypto import X509Certificate
                         |   nonce 2 + 1    |
                         +------------------+
 
-    '''
+"""
 
 def generateClientCertificate(addr, nonce):
     chain = [nonce]

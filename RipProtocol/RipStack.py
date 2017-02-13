@@ -17,24 +17,24 @@ ListenFactory = RipServerFactory
 
 Future cooperators,
 
-    This is the inheritance relation of RipProtocol module.
+    This is the inheritance relation of RipProtocol modules.
 
-    I'm going to add more functions into "RipClient.py" and "RipServer.py".
-    Same functions will be extracted as new modules, at the same level with
-    "RipTransport.py."
+    I'm go to add more functions into "RipClient.py" and "RipServer.py".
 
-    Most cases you don't need to change level 1, 2, 4.
-    All the functions should be add into level 2.
+    All the functions should be add into level 3.
+    That means most cases you won't need to change level 1, 2, 4.
+
+    Similar or same functions will be extracted as modules of level 2.
 
 
                         +---------------+
-                        | RipMessage.py |
+    Level 1             | RipMessage.py |
                         +---------------+
                                 |
                                 |
                                 |
                        +-----------------+
-                       | RipTransport.py |  ... more function modules here.
+    Level 2            | RipTransport.py |  ... more function modules here.
                        +-----------------+
                             |       |
                             |       |
@@ -43,7 +43,7 @@ Future cooperators,
                     |                       |
                     |                       |
             +--------------+         +--------------+
-            | RipServer.py |         | RipClient.py |
+    Level 3 | RipServer.py |         | RipClient.py |
             +--------------+         +--------------+
                     |                       |
                     |                       |
@@ -52,6 +52,6 @@ Future cooperators,
                             |       |
                             |       |
                          +-------------+
-                         | RipStack.py |
+    Level 4              | RipStack.py |
                          +-------------+
 """

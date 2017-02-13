@@ -13,6 +13,7 @@ class RipMessage(MessageDefinition):
         ("ACK", BOOL1, DEFAULT_VALUE(False)),
         ("SNN", BOOL1, DEFAULT_VALUE(False)),
         ("CLS", BOOL1, DEFAULT_VALUE(False)),
+        ("RST", BOOL1, DEFAULT_VALUE(False)),
         ("Signature", STRING, DEFAULT_VALUE("")),
         ("Certificate", LIST(STRING), OPTIONAL),
         ("Data", STRING, DEFAULT_VALUE(""))
@@ -27,12 +28,20 @@ class RipMessage(MessageDefinition):
               [("sequence_number", UINT4),
               ("acknowledgement_number", UINT4, OPTIONAL),
               ("sessionID", STRING),
-              ("reset_flag", BOOL1, DEFAULT_VALUE(False)),
               ("OPTIONS", LIST(STRING), OPTIONAL)
 
            ]
     '''
-   #==========================================================
+    '''
+        RIP 1                                                        RIP 2
+       SNN-SENT ----->      [SEQ:460,SNN ,Nonce1, certs] ----->     SNN-RECV
+
+       ESTABLISHED <----- [SEQ:300, ACK:461, SNN,  ACK,
+                           Nonce2, Signed(Nonce1+1), certs] <----   SNN-RECV
+
+       ESTABLISHED -----> [SEQ:461, ACK:301, ACK,
+                                       Signed(Nonce2)]  ----->      ESTABLISHED
+   '''
     '''
 
                     Part II: State Machine
