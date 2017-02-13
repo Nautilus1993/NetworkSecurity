@@ -19,7 +19,7 @@ Future cooperators,
 
     This is the inheritance relation of RipProtocol modules.
 
-    I'm go to add more functions into "RipClient.py" and "RipServer.py".
+    I'm gonna to add more functions into "RipClient.py" and "RipServer.py".
 
     All the functions should be add into level 3.
     That means most cases you won't need to change level 1, 2, 4.
