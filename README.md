@@ -1,7 +1,5 @@
 
 
-
-
 ##  1. Introduction
 
    The Reliable Interaction Protocol (RIP) provides a method of
