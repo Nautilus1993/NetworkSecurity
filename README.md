@@ -49,7 +49,7 @@
    The data will be transferred via a continuous stream of packets that
    can flow in either direction.  In general, RIP will transfer packets as soon as it is able.
 
-###2.2 Reliability
+### 2.2 Reliability
 
    RIP MUST be able to handle the loss, damage, duplication, or
    reordering of data that may occur due to the unreliable internet
@@ -78,17 +78,17 @@
    able to to authenticate and connect as well as allowing the
    initialization of status information.
 
-###2.4 Interface
+### 2.4 Interface
 
    The RIP user interface provides calls to open or close a connection,
    send messages, and get status information for an open connection.
 
 
 
-##3.  Specifications
+## 3.  Specifications
 
 
-###3.1.  Messages
+### 3.1.  Messages
 
    A message MUST contain the following elements:
 
@@ -123,7 +123,7 @@
 	
 	   ]
 
-####3.1.1.  Sequence Number
+#### 3.1.1.  Sequence Number
 
    The sequence number of the first data in the message.  If the
    Sequence Number Notification Flag is set, this field contains the
@@ -131,13 +131,13 @@
    size of the data field for each message sent.  If the data field is
    empty it increases the sequence number by 1.
 
-####3.1.2.  Acknowledgement Number
+#### 3.1.2.  Acknowledgement Number
 
    This field contains the next sequence number that the sender expects
    to receive.  The acknowledgements are cumulative, meaning that
    acknowledging a sequence number also acknowledges any preceding sequence numbers.
 
-####3.1.3.  Signature
+#### 3.1.3.  Signature
 
    The signature field is the signed(the sender's private key) hash of
    the entire message not including the signature field.  To create the
@@ -146,7 +146,7 @@
    then hashed and signed.  The resulting signature should be placed in
    the signature field and sent.
 
-####3.1.4.  Certificate
+#### 3.1.4.  Certificate
 
    This field is only used in the handshake procedure.  The first
    element in this list would correspond to a Nonce value and the second
@@ -161,31 +161,31 @@
    The session ID will be the concatenated string "Nonce1Nonce2" for the
    client and "Nonce2Nonce1" for the server.
 
-####3.1.6.  Acknowledgement Flag
+#### 3.1.6.  Acknowledgement Flag
 
    If the Acknowledgement Flag is set, this signifies that this is an
    acknowledgement message.
 
-####3.1.7.  Close Flag
+#### 3.1.7.  Close Flag
 
    If the Close Flag is set, this indicates that the sender has no more
    data to send and wishes to close the connection.
 
-####3.1.8.  Sequence Number Notification Flag
+#### 3.1.8.  Sequence Number Notification Flag
 
    If the Sequence Number Notification Flag is set, the sender is
    notifying the receiving RIP of its initial sequence number (ISN),
    which is found in the Sequence Number.  This flag is only used during
    a handshake procedure.
 
-####3.1.9.  Reset Flag
+#### 3.1.9.  Reset Flag
 
    If the Reset Flag is set, the sender received two conflicting
    Sequence Number Notifications and wants to restart the handshake
    procedure.
 
 
-####3.1.10.  Options
+#### 3.1.10.  Options
 
    The options are a list of strings that, if included in the list, have
    the following meanings:
@@ -203,7 +203,7 @@
       the sender is missing an intermediate packet.  The receiver MUST
       resend the unacknowledged message with the lowest sequence number.
 
-###3.2.  Connections
+### 3.2.  Connections
 
    RIP provides full-duplex service between two hosts.  Since one RIP
    can have multiple connections, it must have some way of identifying
@@ -216,7 +216,7 @@
    the address and port of the other process, the local connection
    identifier, and the local port number.
 
-####3.2.1.  Open
+#### 3.2.1.  Open
 
    When a host opens a connection, it has the choice of becoming an
    active open request or a passive open request.  If the host chooses a
@@ -239,7 +239,7 @@ In some cases, it may be possible that two conflicting SNNs are
    state and the handshake procedure can be restarted.  This typically
    occurs due to a crash, as discussed in the following section.
 
-#####3.2.1.1.  Authentication
+##### 3.2.1.1.  Authentication
 
    Authentication is guaranteed in this layer by employing certificate
    chaining in the initial handshake.  The RIP1 sends a nonce (say
@@ -316,7 +316,7 @@ RFC 1                           RIP PRFC                    October 2016
    timeout period, it SHALL move to the LISTEN state.  Otherwise, it
    will follow the procedure above.
 
-#####3.2.3.  Close
+##### 3.2.3.  Close
 
    If a host has no more information to send, it SHALL send a close
    message.  However, the connection is only closed if the other side
@@ -341,7 +341,7 @@ RFC 1                           RIP PRFC                    October 2016
    If both RIPs send the close message simultaneously, once a close
    acknowledgement is received it MUST close the connection.
 
-###3.3.  Data Transmission
+### 3.3.  Data Transmission
 
    Both sending and receiving RIPs must follow a protocol, defined below
    to ensure that it will be able to handle loss, damage, duplication,
@@ -349,7 +349,7 @@ RFC 1                           RIP PRFC                    October 2016
    to act as both a sending and receiving RIP.  For simplicity they are
    described separately.
 
-####3.3.1.  Sending
+#### 3.3.1.  Sending
 
    In order to send data with RIP, the calling process must provide
    buffers of data.  RIP MUST then segment these buffers into packets,
@@ -400,7 +400,7 @@ RFC 1                           RIP PRFC                    October 2016
 
                Figure 3: Sending RIP pseudo code
 
-3.3.2.  Receiving
+#### 3.3.2.  Receiving
 
    Upon arrival the receiving RIP will place the packet into an incoming
    data buffer.  First the receiving RIP must check if this is a
@@ -461,12 +461,12 @@ RFC 1                           RIP PRFC                    October 2016
 
                Figure 4: Simplified Receiving  RIP pseudo code
 
-###3.4.  User Interface
+### 3.4.  User Interface
 
    RIP MUST provide the following functions to its calling process:
    open, close, send, and status.
 
-####3.4.1.  Open
+#### 3.4.1.  Open
 
    The open function follows the procedure outlined in section 2.1.1 and
    MUST have the following parameters:
@@ -487,12 +487,12 @@ RFC 1                           RIP PRFC                    October 2016
    The function SHALL return local connection name, pointer to entry in
    the control block.
 
-####3.4.2.  Close
+#### 3.4.2.  Close
 
    The status function SHALL have one parameter, local connection.  RIP
    MUST send a close message on the specified connection.
 
-####3.4.3.  Send
+#### 3.4.3.  Send
 
    The send function follows the procedure outlined in section 2.3.1.
    If no connection is open, calling send is considered an error.  Send
@@ -507,7 +507,7 @@ RFC 1                           RIP PRFC                    October 2016
    + timeout period (optional): the time until resend, if none is
    + specified RIP default will be used
 
-3.4.4.  Status
+#### 3.4.4.  Status
 
    The status function SHALL have one optional parameter, local
    connection.  If there is a parameter, it MUST return the data in the
@@ -516,33 +516,33 @@ RFC 1                           RIP PRFC                    October 2016
    human-readable format.
 
 
-##4.  Allowable States and Transitions
+## 4.  Allowable States and Transitions
 
    The connection will progress through a series of states.  RIP MUST
    have the following states: CLOSED, LISTEN, SNN-SENT, SNN-RECEIVED,
    ESTABLISHED, RECOVER, CLOSE-REQ, CLOSING
 
-####4.1.  Closed
+### 4.1.  Closed
 
    This represents state in which either a host that has terminated the
    connection or currently has no connection.
 
-####4.2.  Listen
+### 4.2.  Listen
 
    This represents a host that is waiting for a connection from a remote
    RIP and port.
 
-####4.3.  SNN-Sent
+### 4.3.  SNN-Sent
 
    This represents a host that is waiting for a SNN acknowledgement and
    a SNN from a remote RIP.
 
-####4.4.  SNN-Received
+### 4.4.  SNN-Received
 
    This represents a host that is waiting for a SNN acknowledgement
    after having both sent and received a SNN from a remote RIP.
 
-####4.5.  Established
+### 4.5.  Established
 
    This represents an open connection after the handshake is completed.
    It is expected that the connection will be in this state for most of
@@ -553,12 +553,12 @@ RFC 1                           RIP PRFC                    October 2016
    This represents a host that has sent the close request to the remote
    RIP.
 
-####4.7.  Close-Received
+### 4.7.  Close-Received
 
    This represents a receiver after it has received the close request
    from the RIP.
 
-####4.8.  State Diagram
+### 4.8.  State Diagram
 
 
 
@@ -597,7 +597,7 @@ RFC 1                           RIP PRFC                    October 2016
 		             +---------------------------->|CLOSED|
 		                                           +------+
 
-##5.  Allowable Configurations
+## 5.  Allowable Configurations
 
    The timeout period SHOULD be set to a reasonable amount of time based
    on the connection speed of the network.  If the timeout is too long
@@ -610,7 +610,7 @@ RFC 1                           RIP PRFC                    October 2016
    begin to repeat.
 
 
-##6.  Security Considerations
+## 6.  Security Considerations
 
    RIP is vulnerable to man-in-the-middle attacks.  In this type of
    attack, a third-party sits between the two hosts and intercepts
