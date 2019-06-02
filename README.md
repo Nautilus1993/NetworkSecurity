@@ -156,7 +156,7 @@
    nonce and a clear nonce need to be sent, the clear nonce should be
    sent followed by the signed nonce, followed by any certificates.
 
-####3.1.5.  Session ID
+#### 3.1.5.  Session ID
 
    The session ID will be the concatenated string "Nonce1Nonce2" for the
    client and "Nonce2Nonce1" for the server.
@@ -294,7 +294,7 @@ RFC 1                           RIP PRFC                    October 2016
    e.  Similarly, he verifies if 20164.1.100's certificate is signed by
    the root as 20164.1.100.10 has root's public key.
 
-3.2.2.  Reconnect
+#### 3.2.2.  Reconnect
 
    In the case of one side of the connection crashes or loses
    connection, it will automatically restart and try to re-establish any
